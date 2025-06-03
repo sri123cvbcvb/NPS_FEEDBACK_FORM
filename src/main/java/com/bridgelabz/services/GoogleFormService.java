@@ -32,6 +32,8 @@ public class GoogleFormService {
     private final LearnerRepo learnerRepo;
 
     private final EmailService emailService;
+    
+    private final UrlShortenerService urlShortenerService;
 
     public String generateGoogleForm(FormRequest request){
 
@@ -65,13 +67,15 @@ public class GoogleFormService {
                     "&entry.456=" + URLEncoder.encode(lab.getName(), StandardCharsets.UTF_8) +
                     "&entry.789=" + URLEncoder.encode(batch.getName(), StandardCharsets.UTF_8);
 
-            GoogleForm form = new GoogleForm();
+        String shortLink = urlShortenerService.shortenUrl(link);
+
+        GoogleForm form = new GoogleForm();
             form.setBatch(batch);
-            form.setFormLink(link);
+            form.setFormLink(shortLink);
             form.setCreatedAt(LocalDateTime.now());
             googleFormRepo.save(form);
 
-            return link;
+            return shortLink;
     }
 
      public String sendEmail(FormRequest request){
@@ -92,7 +96,8 @@ public class GoogleFormService {
              emailService.sendEmail(
                      learner.getEmail(),
                      "NPS Feedback Request",
-                     "Hi " + learner.getName() + ",\nPlease fill out your feedback here: " + form.getFormLink()
+                     "Hi " + learner.getName() + ",\nPlease fill out your feedback here: "
+                             + form.getFormLink()
              );
          }
 
