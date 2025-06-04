@@ -16,6 +16,10 @@ public class Learner {
     private Long id;
     private String name;
     private String email;
+
     @ManyToOne
     private Batch batch;
+
+    @ManyToOne
+    private TechStack techstack;
 }

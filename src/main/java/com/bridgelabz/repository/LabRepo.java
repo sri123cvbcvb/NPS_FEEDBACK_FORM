@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface LabRepo extends JpaRepository<Lab,Long> {
 
     Optional<Lab> findByName(String name);
+
+    Optional<Lab> findByNameAndCenterId(String labname, Long id);
 }

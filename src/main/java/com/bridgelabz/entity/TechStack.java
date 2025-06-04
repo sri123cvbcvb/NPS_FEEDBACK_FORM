@@ -11,15 +11,18 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Lab {
+public class TechStack {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     @ManyToOne
-    private CenterOfExcellence center;
+    private Batch batch;
 
-    @OneToMany(mappedBy = "lab" , cascade = CascadeType.ALL)
-    private List<Batch> batchList;
+    @OneToMany(mappedBy = "techstack", cascade = CascadeType.ALL)
+    private List<Learner> learnerList;
+
 }

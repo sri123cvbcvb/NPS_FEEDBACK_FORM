@@ -16,12 +16,13 @@ public class GoogleForm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private Batch batch;
-
     private String formLink;
+
     @Column(columnDefinition = "DATETIME")
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    private TechStack techStack;
 
 }
 

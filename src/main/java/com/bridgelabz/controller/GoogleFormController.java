@@ -24,13 +24,13 @@ public class GoogleFormController {
     @PostMapping("/generateForm")
     public ResponseEntity<String> GenerateLink(@RequestBody FormRequest formRequest){
 
-        String link = googleFormService.generateGoogleForm(formRequest);
+        String link = googleFormService.assignFormToTechStack(formRequest);
         return ResponseEntity.ok(link);
     }
 
-    @PostMapping("/send")
-    public ResponseEntity<String> sendEmail(@RequestBody FormRequest request){
-        String s = googleFormService.sendEmail(request);
+    @PostMapping("/send/{techStack}")
+    public ResponseEntity<String> sendEmail(@PathVariable String techStack){
+        String s = googleFormService.SendEmail(techStack);
         return ResponseEntity.ok(s);
     }
 }

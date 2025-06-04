@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface BatchRepo extends JpaRepository<Batch, Long> {
 
     Optional<Batch> findByNameAndLabIdAndCenterId(String name, Long labId, Long coeId);
+
+    Optional<Batch> findByNameAndLabId(String batchname, Long id);
 }

@@ -8,5 +8,6 @@ public class FormRequest {
     public String coeName;
     public String batchname;
     public String labname;
+    public String techStackName;
 
 }

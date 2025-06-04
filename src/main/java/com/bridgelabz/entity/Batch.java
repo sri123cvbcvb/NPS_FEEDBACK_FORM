@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -20,5 +22,8 @@ public class Batch {
 
     @ManyToOne
     private CenterOfExcellence center;
+
+    @OneToMany(mappedBy = "batch", cascade = CascadeType.ALL)
+    private List<TechStack> techStackList;
 
 }
