@@ -1,5 +1,8 @@
 package com.bridgelabz.services;
 
+import com.bridgelabz.Exception.GoogleFormNotFoundException;
+import com.bridgelabz.Exception.LearnerNotFoundException;
+import com.bridgelabz.Exception.TechStackNotFoundException;
 import com.bridgelabz.dto.FormRequest;
 import com.bridgelabz.entity.*;
 import com.bridgelabz.repository.*;
@@ -109,6 +112,7 @@ public class GoogleFormService {
 
      //After requirement changes, I am adding extra fields called techStack:
 
+
     public String assignFormToTechStack(FormRequest request) {
 
         CenterOfExcellence coe = coeRepo.findByName(request.coeName).orElseGet(() -> {
@@ -167,49 +171,33 @@ public class GoogleFormService {
 
         googleFormRepo.save(form);
         System.out.println(techStack.getLearnerList());
-       /* List<Learner> learners = techStack.getLearnerList();
-        for (Learner learner : learners) {
-            emailService.sendEmail(
-                    learner.getEmail(),
-                    "NPS Feedback Request",
-                    "Hi " + learner.getName() + ",\nPlease fill out your feedback here: "
-                            + form.getFormLink()
-            );
-        }*/
 
-        return "Form sent to all learners of batch " + request.batchname;
+        return "Form assgined to all learners of batch " + request.batchname;
 
-        /*
-        for (Learner learner : learners) {
-            emailService.sendEmail(learner.getEmail(), "Feedback Form", shortLink);
-        }
-
-        return shortLink;*/
     }
-
 
     public String SendEmail(String techStackName) {
 
         TechStack techStack = techStackRepo.findByName(techStackName);
 
-        GoogleForm byTechStack = googleFormRepo.findByTechStack(techStack).get();
-
-        /*Optional<GoogleForm> existingForm = googleFormRepo.findByTechStack(techStack);
-        if (existingForm.isPresent()) {
-            return existingForm.get().getFormLink();
+       // GoogleForm byTechStack = googleFormRepo.findByTechStack(techStack).get();
+        if (techStack == null) {
+            throw new TechStackNotFoundException("Tech stack not found: " + techStackName);
         }
 
-
-        String formLink = generateGoogleFormLink(techStack.getName());
-
-        GoogleForm form = new GoogleForm();
-        form.setFormLink(formLink);
-        form.setCreatedAt(LocalDateTime.now());
-        form.setTechStack(techStack);
-        googleFormRepo.save(form);*/
-
-
         List<Learner> learners = techStack.getLearnerList();
+
+        if (learners == null || learners.isEmpty()) {
+            throw new LearnerNotFoundException("No learners found for tech stack: " + techStackName);
+        }
+
+        Optional<GoogleForm> optionalForm = googleFormRepo.findByTechStack(techStack);
+        if (optionalForm.isEmpty()) {
+            throw new GoogleFormNotFoundException("Google form not found for tech stack: " + techStackName);
+        }
+
+        GoogleForm byTechStack = optionalForm.get();
+       // List<Learner> learners = techStack.getLearnerList();
         for (Learner learner : learners) {
             emailService.sendEmail(
                     learner.getEmail(),
@@ -219,7 +207,7 @@ public class GoogleFormService {
             );
         }
 
-        return "EmailSended to all the person who are all in"+ techStackName;
+        return "Email Sent to all the person who are all in"+ techStackName;
     }
 
 

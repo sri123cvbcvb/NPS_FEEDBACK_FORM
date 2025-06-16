@@ -1,5 +1,6 @@
 package com.bridgelabz.controller;
 
+import com.bridgelabz.dto.ApiResponse;
 import com.bridgelabz.dto.FormRequest;
 import com.bridgelabz.entity.Batch;
 import com.bridgelabz.entity.Learner;
@@ -22,15 +23,15 @@ public class GoogleFormController {
 
 
     @PostMapping("/generateForm")
-    public ResponseEntity<String> GenerateLink(@RequestBody FormRequest formRequest){
+    public ResponseEntity<ApiResponse> AssignLink(@RequestBody FormRequest formRequest){
 
         String link = googleFormService.assignFormToTechStack(formRequest);
-        return ResponseEntity.ok(link);
+        return ResponseEntity.ok(new ApiResponse(true, link));
     }
 
     @PostMapping("/send/{techStack}")
-    public ResponseEntity<String> sendEmail(@PathVariable String techStack){
-        String s = googleFormService.SendEmail(techStack);
-        return ResponseEntity.ok(s);
+    public ResponseEntity<ApiResponse> sendEmail(@PathVariable String techStack){
+        String result = googleFormService.SendEmail(techStack);
+        return ResponseEntity.ok(new ApiResponse(true, result));
     }
 }
