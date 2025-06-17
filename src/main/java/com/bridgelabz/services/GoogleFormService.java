@@ -40,6 +40,8 @@ public class GoogleFormService {
 
     private final TechStackRepo techStackRepo;
 
+    private final BitlyUrlShortenerService bitlyUrlShortenerService;
+
    /* public String generateGoogleForm(FormRequest request){
 
             CenterOfExcellence coe = coeRepo.findByName(request.coeName).orElseGet(() -> {
@@ -160,8 +162,9 @@ public class GoogleFormService {
                 "&entry.3=" + URLEncoder.encode(batch.getName(), StandardCharsets.UTF_8) +
                 "&entry.4=" + URLEncoder.encode(techStack.getName(), StandardCharsets.UTF_8);
 
-        String shortLink = urlShortenerService.shortenUrl(link);
+       // String shortLink = urlShortenerService.shortenUrl(link);
 
+        String shortLink = bitlyUrlShortenerService.shortenUrl(link);
 
         GoogleForm form = new GoogleForm();
         form.setFormLink(shortLink);
